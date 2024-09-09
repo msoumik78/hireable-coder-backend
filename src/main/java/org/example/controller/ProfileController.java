@@ -20,7 +20,7 @@ public class ProfileController {
 
     @GetMapping(value = "/{customerName}", produces = {"application/json"})
     @CrossOrigin(origins = "http://localhost:3000")
-    public Person getCustomerDetails(@PathVariable("customerName") final String bankCustomerName) {System.out.println("Controller called");
+    public Person getCustomerDetails(@PathVariable("customerName") final String bankCustomerName) {
       return profileService.getCustomerDetail(bankCustomerName);
     }
 
