@@ -9,4 +9,7 @@ public class Person {
   private String name;
   private int age;
   private String country;
+  private String profession;
+  private String schoolName;
+  private String universityName;
 }

@@ -11,7 +11,7 @@ public class DataHolder {
 
     static {
       stringPersonMap = new ConcurrentHashMap();
-      stringPersonMap.put("Peter", new Person("Peter", 45, "India"));
-      stringPersonMap.put("Dany", new Person("Dany", 28, "USA"));
+      stringPersonMap.put("Peter", new Person("Peter", 45, "India", "Engineer", "SPHS", "Jadavpur University"));
+      stringPersonMap.put("Dany", new Person("Dany", 28, "USA", "Engineer", "SPHS", "Jadavpur University"));
     }
 }
