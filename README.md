@@ -17,3 +17,7 @@ This repo contains a spring boot based very simple REST service which exposes th
   (`java --enable-preview -jar target/sb-backend-0.0.1-SNAPSHOT.jar`)
 - Now access the below URL:
   (`curl  http://localhost:8080/api/1/profile/Dany`)
+
+curl http://localhost:8080/api/1/bank-customers/name1
+curl -H 'Content-Type: application/json' -d '{ "loginName":"user1","password":"password", "name": "name1", "age": 41, "city": "kolkata", "state": "wb", "profession": "service"}' -X POST http://localhost:8080/api/1/bank-customers
+curl -H 'Content-Type: application/json' -d '{ "loginName":"user2","password":"password", "name": "name2", "age": 42, "city": "kolkata", "state": "wb", "profession": "service"}' -X POST http://localhost:8080/api/1/bank-customers
