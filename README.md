@@ -21,3 +21,6 @@ This repo contains a spring boot based very simple REST service which exposes th
 curl http://localhost:8080/api/1/bank-customers/name1
 curl -H 'Content-Type: application/json' -d '{ "loginName":"user1","password":"password", "name": "name1", "age": 41, "city": "kolkata", "state": "wb", "profession": "service"}' -X POST http://localhost:8080/api/1/bank-customers
 curl -H 'Content-Type: application/json' -d '{ "loginName":"user2","password":"password", "name": "name2", "age": 42, "city": "kolkata", "state": "wb", "profession": "service"}' -X POST http://localhost:8080/api/1/bank-customers
+
+curl -H 'Content-Type: application/json' -d '{ "customerId":1, "productName": "ACCOUNT", "productNumber": "11111188888", "productBalance": 100.8}' -X POST http://localhost:8080/api/1/products
+curl -H 'Content-Type: application/json' -d '{ "customerId":1, "productName": "ACCOUNT", "productNumber": "44444222222", "productBalance": 200}' -X POST http://localhost:8080/api/1/products

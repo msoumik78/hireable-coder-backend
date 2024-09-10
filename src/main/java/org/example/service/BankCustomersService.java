@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.models.BankCustomer;
 import org.example.dao.IDao;
 import org.example.exception.InvalidInputException;
+import org.example.models.LoginResponse;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class BankCustomersService {
     return bankCustomer;
   }
 
-  public int verifyLogin(String userName, String password) {
+  public LoginResponse verifyLogin(String userName, String password) {
     return iDao.verifyBankCustomerByLoginDetails(userName, password);
   }
 

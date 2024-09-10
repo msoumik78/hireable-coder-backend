@@ -1,14 +1,19 @@
 package org.example.dao;
 
 import org.example.models.BankCustomer;
+import org.example.models.LoginResponse;
+import org.example.models.Product;
 
-  public interface IDao {
+import java.util.List;
 
-    public void saveInDatabase(BankCustomer bankCustomer);
-    public BankCustomer findBankCustomerByName(String customerName);
-    public Integer verifyBankCustomerByLoginDetails(String userName, String password);
-    public void deleteFromDatabase(String customerName);
+public interface IDao {
 
-    public void updateInDatabase(String customerName, BankCustomer bankCustomer);
+    void saveInDatabase(BankCustomer bankCustomer);
+    BankCustomer findBankCustomerByName(String customerName);
+    LoginResponse verifyBankCustomerByLoginDetails(String userName, String password);
+    void deleteFromDatabase(String customerName);
+    void updateInDatabase(String customerName, BankCustomer bankCustomer);
+    List<Product> getProductsOfCustomer(int customerId);
+    void createProduct(Product product);
 
   }

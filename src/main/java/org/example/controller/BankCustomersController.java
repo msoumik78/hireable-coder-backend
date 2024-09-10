@@ -1,10 +1,10 @@
 package org.example.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.example.models.BankCustomer;
 import org.example.models.LoginDetails;
+import org.example.models.LoginResponse;
 import org.example.service.BankCustomersService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/1/bank-customers")
+@RequiredArgsConstructor
 public class BankCustomersController {
-
-    @Autowired
-    BankCustomersService bankCustomersService;
+  private final BankCustomersService bankCustomersService;
 
     @GetMapping(value = "/{customerName}", produces = {"application/json"})
     public BankCustomer getCustomerDetails(@PathVariable("customerName") final String bankCustomerName) {
@@ -29,8 +28,7 @@ public class BankCustomersController {
 
     @PostMapping(value = "/login-verification", produces = {"application/json"})
     @CrossOrigin(origins = "http://localhost:3000")
-    public int validateCustomerAndRetrieveDetails(@RequestBody LoginDetails loginDetails) {
-      System.out.println("In controller for login credentials verification");
+    public LoginResponse validateCustomerAndRetrieveDetails(@RequestBody LoginDetails loginDetails) {
       return bankCustomersService.verifyLogin(loginDetails.username(), loginDetails.password());
     }
 

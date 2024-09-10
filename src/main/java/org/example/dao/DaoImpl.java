@@ -2,9 +2,12 @@ package org.example.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.example.models.BankCustomer;
-import org.springframework.dao.DataAccessException;
+import org.example.models.LoginResponse;
+import org.example.models.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -14,9 +17,11 @@ public class DaoImpl implements IDao{
 
   private final String insertSQL = "INSERT INTO customers(login_name, password, customer_name,customer_age,customer_city,customer_state,customer_profession) VALUES (?,?, ?,?, ?,?,?)";
   private final String selectSQL = "Select * from customers where customer_name = ?";
-  private final String selectSQLDuringLogin = "Select id from customers where login_name = ? and password = ? ";
+  private final String selectSQLDuringLogin = "Select id, customer_name from customers where login_name = ? and password = ? ";
   private final String deleteSQL = "Delete from customers where customer_name = ?";
   private final String updateSQL = "Update customers set customer_age = ?, customer_city = ?, customer_state = ?, customer_profession = ? where customer_name = ?";
+  private final String fetchProductListSQL = "Select productid ,customerid, product_name, product_number,product_balance from products where customerid = ?";
+  private final String insertProductSQL = "INSERT INTO products(customerid ,product_name ,product_number ,product_balance) VALUES (?,?, ?,?)";
 
 
   @Override
@@ -42,15 +47,14 @@ public class DaoImpl implements IDao{
   }
 
   @Override
-  public Integer verifyBankCustomerByLoginDetails(String userName, String password) {
-    int userId;
-    try {
-      userId = jdbcTemplate.queryForObject(
-      selectSQLDuringLogin, new Object[]{userName, password}, Integer.class);
-    } catch (DataAccessException e) {
-      return -1;
-    }
-    return userId;
+  public LoginResponse verifyBankCustomerByLoginDetails(String userName, String password) {
+    return jdbcTemplate.queryForObject(selectSQLDuringLogin,
+      new Object[]{userName, password},
+      (rs, _) ->
+        new LoginResponse(
+          rs.getInt(1),
+          rs.getString(2)
+        ));
   }
 
   @Override
@@ -62,4 +66,28 @@ public class DaoImpl implements IDao{
   public void updateInDatabase(String customerName, BankCustomer bankCustomer) {
     jdbcTemplate.update(updateSQL, bankCustomer.age(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(), customerName);
   }
+
+  @Override
+  public List<Product> getProductsOfCustomer(int customerId) {
+    List<Product> productList =
+      jdbcTemplate.query(
+        fetchProductListSQL,new Object[]{customerId},
+        (rs, rowNum) ->
+          new Product(
+            rs.getInt(1),
+            rs.getInt(2),
+            rs.getString(3),
+            rs.getString(4),
+            rs.getFloat(5)
+          )
+      );
+    return productList;
+  }
+
+  @Override
+  public void createProduct(Product product) {
+    jdbcTemplate.update(insertProductSQL,product.customerId(), product.productName(), product.productNumber(), product.productBalance());
+  }
+
+
 }
