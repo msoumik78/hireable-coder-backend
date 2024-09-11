@@ -9,7 +9,7 @@ import java.util.List;
 public interface IDao {
 
     void saveInDatabase(BankCustomer bankCustomer);
-    BankCustomer findBankCustomerByName(String customerName);
+    BankCustomer findBankCustomerById(String customerName);
     LoginResponse verifyBankCustomerByLoginDetails(String userName, String password);
     void deleteFromDatabase(String customerName);
     void updateInDatabase(String customerName, BankCustomer bankCustomer);

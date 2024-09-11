@@ -15,24 +15,24 @@ public class DaoImpl implements IDao{
 
   private final JdbcTemplate jdbcTemplate;
 
-  private final String insertSQL = "INSERT INTO customers(login_name, password, customer_name,customer_age,customer_city,customer_state,customer_profession) VALUES (?,?, ?,?, ?,?,?)";
-  private final String selectSQL = "Select * from customers where customer_name = ?";
+  private final String insertSQL = "INSERT INTO customers(login_name, password, customer_name,customer_age,customer_city,customer_state,customer_profession,customer_email,customer_address) VALUES (?,?, ?,?, ?,?,?,?,?)";
+  private final String selectSQL = "Select * from customers where id = ?";
   private final String selectSQLDuringLogin = "Select id, customer_name from customers where login_name = ? and password = ? ";
   private final String deleteSQL = "Delete from customers where customer_name = ?";
-  private final String updateSQL = "Update customers set customer_age = ?, customer_city = ?, customer_state = ?, customer_profession = ? where customer_name = ?";
+  private final String updateSQL = "Update customers set customer_email = ?, customer_address = ?, customer_city = ?, customer_state = ?, customer_profession = ?  where id = ?";
   private final String fetchProductListSQL = "Select productid ,customerid, product_name, product_number,product_balance from products where customerid = ?";
   private final String insertProductSQL = "INSERT INTO products(customerid ,product_name ,product_number ,product_balance) VALUES (?,?, ?,?)";
 
 
   @Override
   public void saveInDatabase(BankCustomer bankCustomer) {
-    jdbcTemplate.update(insertSQL,bankCustomer.loginName(), bankCustomer.password(), bankCustomer.name(), bankCustomer.age(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession());
+    jdbcTemplate.update(insertSQL,bankCustomer.loginName(), bankCustomer.password(), bankCustomer.name(), bankCustomer.age(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(), bankCustomer.email(), bankCustomer.address());
   }
 
   @Override
-  public BankCustomer findBankCustomerByName(String customerName) {
+  public BankCustomer findBankCustomerById(String customerId) {
     return jdbcTemplate.queryForObject(selectSQL,
-      new Object[]{customerName},
+      new Object[]{customerId},
       (rs, rowNum) ->
         new BankCustomer(
           rs.getInt("id"),
@@ -42,7 +42,9 @@ public class DaoImpl implements IDao{
           rs.getInt("customer_age"),
           rs.getString("customer_city"),
           rs.getString("customer_state"),
-          rs.getString("customer_profession")
+          rs.getString("customer_profession"),
+          rs.getString("customer_email"),
+          rs.getString("customer_address")
         ));
   }
 
@@ -63,8 +65,8 @@ public class DaoImpl implements IDao{
   }
 
   @Override
-  public void updateInDatabase(String customerName, BankCustomer bankCustomer) {
-    jdbcTemplate.update(updateSQL, bankCustomer.age(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(), customerName);
+  public void updateInDatabase(String customerId, BankCustomer bankCustomer) {
+    jdbcTemplate.update(updateSQL, bankCustomer.email(), bankCustomer.address(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(),customerId);
   }
 
   @Override

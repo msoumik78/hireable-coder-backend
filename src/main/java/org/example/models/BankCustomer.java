@@ -8,5 +8,7 @@ public record BankCustomer(
         int age,
         String city,
         String state,
-        String profession
+        String profession,
+        String email,
+        String address
 )  { }

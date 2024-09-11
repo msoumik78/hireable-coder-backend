@@ -21,9 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class BankCustomersController {
   private final BankCustomersService bankCustomersService;
 
-    @GetMapping(value = "/{customerName}", produces = {"application/json"})
-    public BankCustomer getCustomerDetails(@PathVariable("customerName") final String bankCustomerName) {
-        return bankCustomersService.getCustomerDetail(bankCustomerName);
+    @GetMapping(value = "/{customerId}", produces = {"application/json"})
+    @CrossOrigin(origins = "http://localhost:3000")
+    public BankCustomer getCustomerDetails(@PathVariable("customerId") final String bankCustomerId) {
+        return bankCustomersService.getCustomerDetail(bankCustomerId);
     }
 
     @PostMapping(value = "/login-verification", produces = {"application/json"})
@@ -42,9 +43,10 @@ public class BankCustomersController {
         bankCustomersService.removeCustomer(bankCustomerName);
     }
 
-    @PutMapping(value = "/{customerName}")
-    public void updateCustomer(@PathVariable("customerName") final String bankCustomerName, @RequestBody BankCustomer bankCustomerUpdated) {
-        bankCustomersService.updateCustomer(bankCustomerName, bankCustomerUpdated);
+    @PutMapping(value = "/{customerId}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public void updateCustomer(@PathVariable("customerId") final String bankCustomerId, @RequestBody BankCustomer bankCustomerUpdated) {
+      bankCustomersService.updateCustomer(bankCustomerId, bankCustomerUpdated);
     }
 
 }

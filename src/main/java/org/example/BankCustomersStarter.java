@@ -18,8 +18,8 @@ public class BankCustomersStarter {
       jdbcTemplate.update("Create table customers " +
         "(id bigint auto_increment,login_name VARCHAR(50), " +
         "password VARCHAR(100), customer_name VARCHAR(50),customer_age int,customer_city VARCHAR(50)," +
-        "customer_state VARCHAR(50),customer_profession VARCHAR(50)" +
-        ")");
+        "customer_state VARCHAR(50),customer_profession VARCHAR(50), customer_email VARCHAR(100), customer_address " +
+        "VARCHAR(100))");
       jdbcTemplate.update("Create table products " +
         "(productid bigint auto_increment,customerid bigint, " +
         "product_name VARCHAR(100), product_number VARCHAR(50),product_balance VARCHAR(50)" +

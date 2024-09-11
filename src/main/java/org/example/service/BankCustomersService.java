@@ -21,12 +21,12 @@ public class BankCustomersService {
     iDao.saveInDatabase(bankCustomer);
   }
 
-  public BankCustomer getCustomerDetail(String bankCustomerName) {
+  public BankCustomer getCustomerDetail(String bankCustomerId) {
     BankCustomer bankCustomer;
     try {
-      bankCustomer = iDao.findBankCustomerByName(bankCustomerName);
+      bankCustomer = iDao.findBankCustomerById(bankCustomerId);
     } catch (EmptyResultDataAccessException e) {
-      throw new InvalidInputException("Bankcustomer : "+bankCustomerName+" not found");
+      throw new InvalidInputException("Bankcustomer : "+bankCustomerId+" not found");
     }
     return bankCustomer;
   }
@@ -41,9 +41,9 @@ public class BankCustomersService {
     iDao.deleteFromDatabase(bankCustomerName);
   }
 
-  public void updateCustomer(String bankCustomerName, BankCustomer bankCustomerUpdated) {
-    BankCustomer bankCustomer = getCustomerDetail(bankCustomerName);
-    iDao.updateInDatabase(bankCustomerName, bankCustomerUpdated);
+  public void updateCustomer(String bankCustomerId, BankCustomer bankCustomerUpdated) {
+    BankCustomer bankCustomer = getCustomerDetail(bankCustomerId);
+    iDao.updateInDatabase(bankCustomerId, bankCustomerUpdated);
   }
 
 }
