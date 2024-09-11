@@ -3,7 +3,7 @@ package org.example.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dao.IDao;
-import org.example.models.Product;
+import org.example.models.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,14 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class ProductsService {
+public class TransactionService {
   private final IDao iDao;
 
-  public List<Product> getProductList(int customerId) {
-    return iDao.getProductsOfCustomer(customerId);
+  public List<Transaction> getTransactionList(String customerId) {
+    return iDao.getTransactions(customerId);
   }
-
-  public void createProduct(Product product) {
-    iDao.createProduct(product);
+  public void createTransaction(Transaction transaction) {
+    iDao.createTransaction(transaction);
   }
 }

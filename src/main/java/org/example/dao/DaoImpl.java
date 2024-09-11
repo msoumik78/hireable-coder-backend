@@ -1,12 +1,11 @@
 package org.example.dao;
 
 import lombok.RequiredArgsConstructor;
-import org.example.models.BankCustomer;
-import org.example.models.LoginResponse;
-import org.example.models.Product;
+import org.example.models.Transaction;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -14,82 +13,29 @@ import java.util.List;
 public class DaoImpl implements IDao{
 
   private final JdbcTemplate jdbcTemplate;
-
-  private final String insertSQL = "INSERT INTO customers(login_name, password, customer_name,customer_age,customer_city,customer_state,customer_profession,customer_email,customer_address) VALUES (?,?, ?,?, ?,?,?,?,?)";
-  private final String selectSQL = "Select * from customers where id = ?";
-  private final String selectSQLDuringLogin = "Select id, customer_name from customers where login_name = ? and password = ? ";
-  private final String deleteSQL = "Delete from customers where customer_name = ?";
-  private final String updateSQL = "Update customers set customer_email = ?, customer_address = ?, customer_city = ?, customer_state = ?, customer_profession = ?  where id = ?";
-  private final String fetchProductListSQL = "Select productid ,customerid, product_name, product_number,product_balance from products where customerid = ?";
-  private final String insertProductSQL = "INSERT INTO products(customerid ,product_name ,product_number ,product_balance) VALUES (?,?, ?,?)";
-
+  private final String fetchTransactionListSQL = "Select from_account ,to_account, amount, transfer_date from transactions where customer_id = ?";
+  private final String createTransaction = "INSERT INTO transactions(customer_id, from_account ,to_account ,amount ,transfer_date) VALUES (?, ?,?, ?,?)";
 
   @Override
-  public void saveInDatabase(BankCustomer bankCustomer) {
-    jdbcTemplate.update(insertSQL,bankCustomer.loginName(), bankCustomer.password(), bankCustomer.name(), bankCustomer.age(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(), bankCustomer.email(), bankCustomer.address());
+  public void createTransaction(Transaction transaction) {
+    jdbcTemplate.update(createTransaction,transaction.customerId(), transaction.fromAccount(), transaction.toAccount(), transaction.amount(),
+      (transaction.transactionDate() != null) ? transaction.transactionDate() : LocalDate.now());
   }
 
   @Override
-  public BankCustomer findBankCustomerById(String customerId) {
-    return jdbcTemplate.queryForObject(selectSQL,
-      new Object[]{customerId},
-      (rs, rowNum) ->
-        new BankCustomer(
-          rs.getInt("id"),
-          rs.getString("login_name"),
-          "",
-          rs.getString("customer_name"),
-          rs.getInt("customer_age"),
-          rs.getString("customer_city"),
-          rs.getString("customer_state"),
-          rs.getString("customer_profession"),
-          rs.getString("customer_email"),
-          rs.getString("customer_address")
-        ));
-  }
-
-  @Override
-  public LoginResponse verifyBankCustomerByLoginDetails(String userName, String password) {
-    return jdbcTemplate.queryForObject(selectSQLDuringLogin,
-      new Object[]{userName, password},
-      (rs, _) ->
-        new LoginResponse(
-          rs.getInt(1),
-          rs.getString(2)
-        ));
-  }
-
-  @Override
-  public void deleteFromDatabase(String customerName) {
-    jdbcTemplate.update(deleteSQL,customerName);
-  }
-
-  @Override
-  public void updateInDatabase(String customerId, BankCustomer bankCustomer) {
-    jdbcTemplate.update(updateSQL, bankCustomer.email(), bankCustomer.address(), bankCustomer.city(), bankCustomer.state(), bankCustomer.profession(),customerId);
-  }
-
-  @Override
-  public List<Product> getProductsOfCustomer(int customerId) {
-    List<Product> productList =
+  public List<Transaction> getTransactions(String customerId) {
+    List<Transaction> transactionList =
       jdbcTemplate.query(
-        fetchProductListSQL,new Object[]{customerId},
+        fetchTransactionListSQL,new Object[]{customerId},
         (rs, rowNum) ->
-          new Product(
-            rs.getInt(1),
-            rs.getInt(2),
-            rs.getString(3),
-            rs.getString(4),
-            rs.getFloat(5)
+          new Transaction(
+            1,
+            rs.getString(1),
+            rs.getString(2),
+            rs.getInt(3),
+            rs.getDate(4)
           )
       );
-    return productList;
+    return transactionList;
   }
-
-  @Override
-  public void createProduct(Product product) {
-    jdbcTemplate.update(insertProductSQL,product.customerId(), product.productName(), product.productNumber(), product.productBalance());
-  }
-
-
 }
