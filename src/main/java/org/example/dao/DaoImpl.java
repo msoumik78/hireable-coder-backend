@@ -53,7 +53,8 @@ public class DaoImpl implements IDao{
       (rs, _) ->
         new LoginResponse(
           rs.getInt(1),
-          rs.getString(2)
+          rs.getString(2),
+          null
         ));
   }
 

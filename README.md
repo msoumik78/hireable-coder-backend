@@ -1,17 +1,17 @@
-# Functionality : Exposes the profile service and product service of a mini bank app
-This repo contains a spring boot based simple REST service which has endpoints for:
-- Adding/ Retrieving profile details of a bank customer
-- Verifying login credentials of a bank customer
-- Retrieving product details of the bank customer to show his accounts and other products
+# Functionality : Creates a JWT on log in and verifies the JWT on subsequent reqyuests
+This repo contains a spring boot based simple REST service which has capabilities for:
+- Creating a JWT during login
+- Validating
 
 
 # Technical details and Pre-requisites
 - Written using Spring Boot framework and Java.
+- JWT creation and validation done using nimbus library (https://connect2id.com/products/nimbus-jose-jwt)
 
 
 
 # How to run locally
-- Clone / checkout this branch (branch-2) to your laptop
+- Clone / checkout this branch (branch-2a) to your laptop
 - Ensure that you have JDK22 and Maven3.8.5 available
 - Now compile the spring boot project using the below command:
   (`mvn clean package -DskipTests`)

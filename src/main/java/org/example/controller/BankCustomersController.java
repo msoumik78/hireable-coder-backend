@@ -1,9 +1,11 @@
 package org.example.controller;
 
+import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.example.models.BankCustomer;
 import org.example.models.LoginDetails;
 import org.example.models.LoginResponse;
+import org.example.service.AuthService;
 import org.example.service.BankCustomersService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BankCustomersController {
   private final BankCustomersService bankCustomersService;
+  private final AuthService authService;
 
     @GetMapping(value = "/{customerName}", produces = {"application/json"})
     public BankCustomer getCustomerDetails(@PathVariable("customerName") final String bankCustomerName) {
@@ -28,8 +31,10 @@ public class BankCustomersController {
 
     @PostMapping(value = "/login-verification", produces = {"application/json"})
     @CrossOrigin(origins = "http://localhost:3000")
-    public LoginResponse validateCustomerAndRetrieveDetails(@RequestBody LoginDetails loginDetails) {
-      return bankCustomersService.verifyLogin(loginDetails.username(), loginDetails.password());
+    public LoginResponse validateCustomerAndRetrieveDetails(@RequestBody LoginDetails loginDetails) throws JOSEException {
+      LoginResponse loginResponse = bankCustomersService.verifyLogin(loginDetails.username(), loginDetails.password());
+      String jwtResponse = authService.createJWT(String.valueOf(loginResponse.userId()));
+      return new LoginResponse(loginResponse.userId(), loginResponse.username(), jwtResponse);
     }
 
     @PostMapping(produces = {"application/json"})
