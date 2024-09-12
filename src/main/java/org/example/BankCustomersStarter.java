@@ -22,7 +22,7 @@ public class BankCustomersStarter {
         "VARCHAR(100))");
       jdbcTemplate.update("Create table products " +
         "(productid bigint auto_increment,customerid bigint, " +
-        "product_name VARCHAR(100), product_number VARCHAR(50),product_balance VARCHAR(50)" +
+        "product_name VARCHAR(100), product_number VARCHAR(50),product_balance number" +
         ")");
     };
   }

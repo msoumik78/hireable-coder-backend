@@ -15,5 +15,6 @@ public interface IDao {
     void updateInDatabase(String customerName, BankCustomer bankCustomer);
     List<Product> getProductsOfCustomer(int customerId);
     void createProduct(Product product);
+    void updateProductBalance(String account, int balance, String tranType);
 
   }

@@ -22,6 +22,8 @@ public class DaoImpl implements IDao{
   private final String updateSQL = "Update customers set customer_email = ?, customer_address = ?, customer_city = ?, customer_state = ?, customer_profession = ?  where id = ?";
   private final String fetchProductListSQL = "Select productid ,customerid, product_name, product_number,product_balance from products where customerid = ?";
   private final String insertProductSQL = "INSERT INTO products(customerid ,product_name ,product_number ,product_balance) VALUES (?,?, ?,?)";
+  private final String updateProductSQLDebit = "UPDATE products set product_balance = product_balance - ? where  product_number = ?";
+  private final String updateProductSQLCredit = "UPDATE products set product_balance = product_balance + ? where  product_number = ?";
 
 
   @Override
@@ -89,6 +91,18 @@ public class DaoImpl implements IDao{
   @Override
   public void createProduct(Product product) {
     jdbcTemplate.update(insertProductSQL,product.customerId(), product.productName(), product.productNumber(), product.productBalance());
+  }
+
+  @Override
+  public void updateProductBalance(String account, int balance, String tranType) {
+    String updateSQL;
+    if ("DEBIT".equals(tranType)) {
+      updateSQL = "UPDATE products set product_balance = (product_balance - "+balance+") where  product_number='"+account+"'";
+      jdbcTemplate.update(updateSQL);
+    } else if ("CREDIT".equals(tranType)) {
+      updateSQL = "UPDATE products set product_balance = (product_balance + "+balance+") where  product_number='"+account+"'";
+      jdbcTemplate.update(updateSQL);
+    }
   }
 
 

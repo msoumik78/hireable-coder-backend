@@ -1,16 +1,15 @@
-# Functionality : Exposes the retrieve profile details and update profile details services
-This repo contains a spring boot based simple REST service which has endpoints for:
-- Retrieving profile details of a bank customer
-- Updating profile details of a bank customer
+# Functionality : Asynchronously receives payment notifications and updates balance 
+This repo contains a spring boot based service which listens for an incoming message and updates the database.
 
 
 # Technical details and Pre-requisites
 - Written using Spring Boot framework and Java.
+- NATS server running at port 4222
 
 
 
 # How to run locally
-- Clone / checkout this branch (branch-3) to your laptop
+- Clone / checkout this branch (branch-5b) to your laptop
 - Ensure that you have JDK22 and Maven3.8.5 available
 - Now compile the spring boot project using the below command:
   (`mvn clean package -DskipTests`)
