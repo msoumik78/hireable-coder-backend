@@ -15,11 +15,13 @@ import java.util.List;
 @Transactional
 public class TransactionService {
   private final IDao iDao;
+  private final NATSPublisher natsPublisher;
 
   public List<Transaction> getTransactionList(String customerId) {
     return iDao.getTransactions(customerId);
   }
   public void createTransaction(Transaction transaction) {
     iDao.createTransaction(transaction);
+    natsPublisher.sendMessage("transaction", transaction.fromAccount()+":"+transaction.toAccount()+":"+transaction.amount());
   }
 }

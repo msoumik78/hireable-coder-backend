@@ -29,8 +29,6 @@ public class TransactionController {
   @PostMapping
   @CrossOrigin(origins = "http://localhost:3000")
   public void createTransaction(@RequestBody Transaction transaction) {
-    System.out.println("Tranefer posted : from account = "+transaction.fromAccount()+", to account ="+transaction.toAccount()+", ammount = "+transaction.amount()
-    +", customer id = "+transaction.customerId());
     transactionService.createTransaction(transaction);
   }
 }
