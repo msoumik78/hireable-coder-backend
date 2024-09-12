@@ -15,3 +15,12 @@ jobs:
         release: 22
     - name: Build with Maven
       run: mvn clean package
+    - name: Deploy to my EC2 instance
+      uses: easingthemes/ssh-deploy@v2.1.5
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SOURCE: "target/sb-backend-0.0.1-SNAPSHOT.jar"
+        REMOTE_HOST: ${{ secrets.SSH_HOST }}
+        REMOTE_USER: "ec2-user"
+        TARGET: "/home/ec2-user/test-soumik"
+
