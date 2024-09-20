@@ -9,7 +9,7 @@ This repo contains a spring boot based very simple REST service which exposes th
 
 
 # How to run locally
-- Clone / checkout this branch (branch-2a) to your laptop
+- Clone / checkout this branch (branch-1) to your laptop
 - Ensure that you have JDK22 (or above) and Maven3.8.5 available
 - Now compile the spring boot project using the below command:
   (`mvn clean package -DskipTests`)
